@@ -28,7 +28,7 @@
         <ul>
             <li><a href="#our-story">Our Story</a></li>
             <li><a href="#big-day">The Big Day</a></li>
-            <li><a href="#travel">Travel</a></li>
+            <li><a href="#transportation">Transportation</a></li>
             <li><a href="#guest-photos">Photo Share</a></li>
             <li><a href="#faq">FAQ</a></li>
             <li><a href="#rsvp">RSVP</a></li>
@@ -119,37 +119,68 @@
             </div>
         </section>
 
-        <section id="travel" class="section">
-            <h2>Travel & Accommodation</h2>
-            <div class="hotel-cards">
-                <div class="hotel-card">
-                    <h3>Hotel Name</h3>
-                    <p class="hotel-address">123 Main St, City, State</p>
-                    <p class="hotel-details">Special wedding rate: $XXX/night</p>
-                    <a href="#" class="booking-link">Book Now</a>
+        <section id="transportation" class="section">
+            <h2>Transportation</h2>
+            <div class="event-cards">
+                <div class="event-card">
+                    <div class="event-icon">
+                        <i class="fas fa-train"></i>
+                    </div>
+                    <div class="event-details">
+                        <h3>MTR</h3>
+                        <p class="event-location">Wong Chuk Hang Station</p>
+                        <p class="event-address">10 minutes walk from THE SOUTHSIDE</p>
+                        <div class="transport-image">
+                            <img src="images/mtr-map.jpg" alt="MTR Map" class="transport-img">
+                        </div>
+                    </div>
                 </div>
-                <!-- More hotel cards can be added -->
-            </div>
-            <div class="map-container">
-                <!-- Map will be added via JavaScript -->
-            </div>
-            <div class="transport-tips">
-                <h3>Transportation Tips</h3>
-                <ul>
-                    <li>Airport: [Nearest Airport]</li>
-                    <li>Shuttle service available</li>
-                    <li>Parking information</li>
-                </ul>
+
+                <div class="event-card">
+                    <div class="event-icon">
+                        <i class="fas fa-bus"></i>
+                    </div>
+                    <div class="event-details">
+                        <h3>Shuttle Bus</h3>
+                        <p class="event-location">Admiralty Station</p>
+                        <p class="event-address">2 shuttle buses will be arranged at the end of the reception</p>
+                    </div>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-icon">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <div class="event-details">
+                        <h3>Self-Driving</h3>
+                        <p class="event-location">Parking Available only at Aberdeen Marina Club</p>
+                        <p class="event-address">Please share your car plate number with us so we can arrange parking for you.</p>
+                    </div>
+                </div>
             </div>
         </section>
 
         <section id="guest-photos" class="section">
             <h2>Share Your Photos</h2>
-            <p class="photo-upload-desc">We'd love to see your memories! Upload your favorite photos from the wedding below.</p>
-            <form id="photo-upload-form" class="photo-upload-form">
-                <input type="file" id="photo-input" name="photos" accept="image/*" multiple>
-            </form>
-            <div id="photo-gallery" class="photo-gallery"></div>
+            <div class="event-cards">
+                <div class="event-card">
+                    <div class="event-icon">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <div class="event-details">
+                        <h3>Photo Gallery</h3>
+                        <p class="event-address">We'd love to see your memories! Upload your favorite photos from the wedding below.</p>
+                        <form id="photo-upload-form" class="photo-upload-form">
+                            <label for="photo-input">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <span class="upload-text">Select Photos</span>
+                            </label>
+                            <input type="file" id="photo-input" name="photos" accept="image/*" multiple>
+                        </form>
+                        <div id="photo-gallery" class="photo-gallery"></div>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <section id="faq" class="section">
@@ -172,12 +203,12 @@
             <h2>RSVP</h2>
             <form id="rsvp-form" class="rsvp-form">
                 <div class="form-group">
-                    <label for="name">Name(s)</label>
+                    <label for="name">Name</label>
                     <input type="text" id="name" name="name" required>
                 </div>
                 <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
+                    <label for="phone">Phone</label>
+                    <input type="tel" id="phone" name="phone" required>
                 </div>
                 <div class="form-group">
                     <label for="attending">Will you be attending?</label>
@@ -188,21 +219,11 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="guests">Number of guests</label>
-                    <input type="number" id="guests" name="guests" min="1" value="1">
-                </div>
-                <div class="form-group">
-                    <label for="meal">Meal Preference</label>
+                    <label for="meal">Meal Preference (optional)</label>
                     <select id="meal" name="meal">
                         <option value="">Please select</option>
-                        <option value="beef">Beef</option>
-                        <option value="chicken">Chicken</option>
                         <option value="vegetarian">Vegetarian</option>
                     </select>
-                </div>
-                <div class="form-group">
-                    <label for="song">Song Request (optional)</label>
-                    <input type="text" id="song" name="song">
                 </div>
                 <div class="form-group">
                     <label for="message">Message (optional)</label>
@@ -214,7 +235,7 @@
     </div>
 
     <footer>
-        <p>&copy; 2024 Mish & Ty's Wedding</p>
+        <p>&copy; 2025 Michelle & Tyler's Wedding</p>
     </footer>
 
     <script src="script.js"></script>

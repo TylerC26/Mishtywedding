@@ -103,4 +103,42 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+
+    document.getElementById('photo-input').addEventListener('change', function(e) {
+        const uploadForm = document.querySelector('.photo-upload-form');
+        const selectButton = document.querySelector('.photo-upload-form label');
+        
+        if (this.files && this.files.length > 0) {
+            // Hide the select button
+            selectButton.style.display = 'none';
+            
+            // Create upload button if it doesn't exist
+            if (!document.querySelector('.upload-btn')) {
+                const uploadBtn = document.createElement('button');
+                uploadBtn.className = 'upload-btn';
+                uploadBtn.innerHTML = '<i class="fas fa-upload"></i> Upload Selected Photos';
+                uploadForm.appendChild(uploadBtn);
+
+                // Add click handler to the upload button
+                uploadBtn.addEventListener('click', function() {
+                    // Here you would typically handle the actual upload
+                    // For now, we'll just simulate the upload
+                    const successMessage = document.createElement('div');
+                    successMessage.className = 'upload-success';
+                    successMessage.innerHTML = '<i class="fas fa-check-circle"></i> Photos uploaded successfully!';
+                    uploadForm.appendChild(successMessage);
+
+                    // Reset the form and restore initial state after a short delay
+                    setTimeout(() => {
+                        document.getElementById('photo-input').value = '';
+                        selectButton.style.display = 'flex';
+                        uploadBtn.remove();
+                        successMessage.remove();
+                        // Reload the page
+                        window.location.reload();
+                    }, 10000);
+                });
+            }
+        }
+    });
 }); 
