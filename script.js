@@ -103,4 +103,27 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+
+    // Ceremony Venue Modal
+    const ceremonyCard = document.querySelector('.ceremony-card');
+    const ceremonyModal = document.getElementById('ceremonyModal');
+    const closeModal = document.querySelector('.close-modal');
+
+    ceremonyCard.addEventListener('click', () => {
+        ceremonyModal.style.display = 'block';
+        document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+    });
+
+    closeModal.addEventListener('click', () => {
+        ceremonyModal.style.display = 'none';
+        document.body.style.overflow = ''; // Restore scrolling
+    });
+
+    // Close modal when clicking outside the modal content
+    window.addEventListener('click', (event) => {
+        if (event.target === ceremonyModal) {
+            ceremonyModal.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+    });
 }); 

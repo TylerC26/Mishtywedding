@@ -54,29 +54,43 @@
 
         <section id="big-day" class="section">
             <h2>The Big Day</h2>
-            <ul class="big-day-list">
-                <li class="big-day-item">
-                    <span class="big-day-icon"><i class="fas fa-church"></i></span>
-                    <div class="big-day-info">
-                        <span class="event-name">Ceremony</span>
-                        <span class="event-details">3:00 PM - St. Mary's Church</span>
+            <div class="event-cards">
+                <div class="event-card ceremony-card">
+                    <div class="event-icon">
+                        <i class="fas fa-church"></i>
                     </div>
-                </li>
-                <li class="big-day-item">
-                    <span class="big-day-icon"><i class="fas fa-glass-cheers"></i></span>
-                    <div class="big-day-info">
-                        <span class="event-name">Cocktail Hour</span>
-                        <span class="event-details">4:30 PM - Garden Terrace</span>
+                    <div class="event-details">
+                        <h3>Ceremony</h3>
+                        <p class="event-time">3:00 PM</p>
+                        <p class="event-location">St. Mary's Church</p>
+                        <p class="event-description">Join us as we exchange our vows in a beautiful ceremony.</p>
                     </div>
-                </li>
-                <li class="big-day-item">
-                    <span class="big-day-icon"><i class="fas fa-utensils"></i></span>
-                    <div class="big-day-info">
-                        <span class="event-name">Reception Dinner</span>
-                        <span class="event-details">6:00 PM - Grand Ballroom</span>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-icon">
+                        <i class="fas fa-glass-cheers"></i>
                     </div>
-                </li>
-            </ul>
+                    <div class="event-details">
+                        <h3>Cocktail Hour</h3>
+                        <p class="event-time">4:30 PM</p>
+                        <p class="event-location">Garden Terrace</p>
+                        <p class="event-description">Enjoy drinks and hors d'oeuvres while we take our photos.</p>
+                    </div>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-icon">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <div class="event-details">
+                        <h3>Reception Dinner</h3>
+                        <p class="event-time">6:00 PM</p>
+                        <p class="event-location">Grand Ballroom</p>
+                        <p class="event-description">Celebrate with us over a delicious dinner and dancing.</p>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <section id="wedding-venue" class="section">
@@ -196,6 +210,36 @@
     <footer>
         <p>&copy; 2024 Mish & Ty's Wedding</p>
     </footer>
+
+    <!-- Ceremony Venue Modal -->
+    <div class="modal" id="ceremonyModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Ceremony Venue</h2>
+            <div class="venue-info">
+                <h3>St. Mary's Church</h3>
+                <p class="venue-address">123 Church Street, City, State</p>
+                <div class="venue-map">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.2155710125!2d-73.9878448!3d40.7484405!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25855c6480299%3A0x55194ec5a1ae072e!2sSt.%20Mary's%20Church!5e0!3m2!1sen!2sus!4v1645555555555!5m2!1sen!2sus" 
+                            width="100%" 
+                            height="300" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy">
+                    </iframe>
+                </div>
+                <div class="venue-details">
+                    <h4>Details</h4>
+                    <ul>
+                        <li><i class="fas fa-clock"></i> Ceremony starts at 3:00 PM</li>
+                        <li><i class="fas fa-parking"></i> Parking available on-site</li>
+                        <li><i class="fas fa-wheelchair"></i> Wheelchair accessible</li>
+                        <li><i class="fas fa-bus"></i> Public transportation nearby</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
