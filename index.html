@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#f8e1e4">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Mish & Ty's Wedding</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+</head>
+<body>
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Mish & Ty</h1>
+            <p class="date">Save the Date</p>
+            <p class="date-details">[Wedding Date]</p>
+            <p class="welcome-message">We can't wait to celebrate with you!</p>
+        </div>
+    </header>
+
+    <nav class="main-nav">
+        <ul>
+            <li><a href="#our-story">Our Story</a></li>
+            <li><a href="#big-day">The Big Day</a></li>
+            <li><a href="#travel">Travel</a></li>
+            <li><a href="#wedding-party">Wedding Party</a></li>
+            <li><a href="#registry">Registry</a></li>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="#rsvp">RSVP</a></li>
+        </ul>
+    </nav>
+
+    <section id="our-story" class="section">
+        <h2>Our Story</h2>
+        <div class="story-container">
+            <div class="story-text">
+                <p>Your beautiful love story goes here...</p>
+            </div>
+            <div class="story-gallery">
+                <div class="gallery-container">
+                    <!-- Gallery items will be added via JavaScript -->
+                </div>
+                <button class="gallery-nav prev"><i class="fas fa-chevron-left"></i></button>
+                <button class="gallery-nav next"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <section id="big-day" class="section">
+        <h2>The Big Day</h2>
+        <ul class="big-day-list">
+            <li class="big-day-item">
+                <span class="big-day-icon"><i class="fas fa-church"></i></span>
+                <div class="big-day-info">
+                    <span class="event-name">Ceremony</span>
+                    <span class="event-details">3:00 PM - St. Mary's Church</span>
+                </div>
+            </li>
+            <li class="big-day-item">
+                <span class="big-day-icon"><i class="fas fa-glass-cheers"></i></span>
+                <div class="big-day-info">
+                    <span class="event-name">Cocktail Hour</span>
+                    <span class="event-details">4:30 PM - Garden Terrace</span>
+                </div>
+            </li>
+            <li class="big-day-item">
+                <span class="big-day-icon"><i class="fas fa-utensils"></i></span>
+                <div class="big-day-info">
+                    <span class="event-name">Reception Dinner</span>
+                    <span class="event-details">6:00 PM - Grand Ballroom</span>
+                </div>
+            </li>
+        </ul>
+    </section>
+
+    <section id="travel" class="section">
+        <h2>Travel & Accommodation</h2>
+        <div class="hotel-cards">
+            <div class="hotel-card">
+                <h3>Hotel Name</h3>
+                <p class="hotel-address">123 Main St, City, State</p>
+                <p class="hotel-details">Special wedding rate: $XXX/night</p>
+                <a href="#" class="booking-link">Book Now</a>
+            </div>
+            <!-- More hotel cards can be added -->
+        </div>
+        <div class="map-container">
+            <!-- Map will be added via JavaScript -->
+        </div>
+        <div class="transport-tips">
+            <h3>Transportation Tips</h3>
+            <ul>
+                <li>Airport: [Nearest Airport]</li>
+                <li>Shuttle service available</li>
+                <li>Parking information</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="wedding-party" class="section">
+        <h2>Wedding Party</h2>
+        <div class="party-grid">
+            <div class="party-member">
+                <img src="placeholder.jpg" alt="Member Name">
+                <h3>Name</h3>
+                <p class="role">Role</p>
+                <p class="fun-fact">Fun fact about them</p>
+            </div>
+            <!-- More party members can be added -->
+        </div>
+    </section>
+
+    <section id="registry" class="section">
+        <h2>Gift Registry</h2>
+        <div class="registry-logos">
+            <a href="#" class="registry-link">
+                <img src="store1-logo.png" alt="Store 1">
+            </a>
+            <a href="#" class="registry-link">
+                <img src="store2-logo.png" alt="Store 2">
+            </a>
+        </div>
+    </section>
+
+    <section id="faq" class="section">
+        <h2>FAQ</h2>
+        <div class="accordion">
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <h3>What time should I arrive?</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="accordion-content">
+                    <p>Please arrive at least 30 minutes before the ceremony.</p>
+                </div>
+            </div>
+            <!-- More FAQ items can be added -->
+        </div>
+    </section>
+
+    <section id="rsvp" class="section">
+        <h2>RSVP</h2>
+        <form id="rsvp-form" class="rsvp-form">
+            <div class="form-group">
+                <label for="name">Name(s)</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="attending">Will you be attending?</label>
+                <select id="attending" name="attending" required>
+                    <option value="">Please select</option>
+                    <option value="yes">Yes, I'll be there!</option>
+                    <option value="no">Sorry, I can't make it</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="guests">Number of guests</label>
+                <input type="number" id="guests" name="guests" min="1" value="1">
+            </div>
+            <div class="form-group">
+                <label for="meal">Meal Preference</label>
+                <select id="meal" name="meal">
+                    <option value="">Please select</option>
+                    <option value="beef">Beef</option>
+                    <option value="chicken">Chicken</option>
+                    <option value="vegetarian">Vegetarian</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="song">Song Request (optional)</label>
+                <input type="text" id="song" name="song">
+            </div>
+            <div class="form-group">
+                <label for="message">Message (optional)</label>
+                <textarea id="message" name="message"></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Submit RSVP</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Mish & Ty's Wedding</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html> 
