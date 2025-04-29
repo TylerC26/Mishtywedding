@@ -9,56 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Photo Gallery
-    const galleryContainer = document.querySelector('.gallery-container');
-    if (galleryContainer) {
-        // Add your gallery images here
-        const galleryImages = [
-            'images/gallery1.jpg',
-            'images/gallery2.jpg',
-            'images/gallery3.jpg',
-            'images/gallery4.jpg',
-            'images/gallery5.jpg',
-            'images/gallery6.jpg',
-            'images/gallery7.jpg',
-            'images/gallery8.jpg',
-            'images/gallery9.jpg',
-            'images/gallery10.jpg',
-            'images/gallery11.jpg',
-            'images/gallery12.jpg',
-            'images/gallery13.jpg',
-            'images/gallery14.jpg'
-        ];
-
-        let currentIndex = 0;
-
-        function updateGallery() {
-            const img = document.createElement('img');
-            img.src = galleryImages[currentIndex];
-            img.alt = `Gallery image ${currentIndex + 1}`;
-            img.style.width = '100%';
-            img.style.height = '100%';
-            img.style.objectFit = 'cover';
-            
-            // Clear previous image
-            galleryContainer.innerHTML = '';
-            galleryContainer.appendChild(img);
-        }
-
-        document.querySelector('.gallery-nav.prev').addEventListener('click', () => {
-            currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
-            updateGallery();
-        });
-
-        document.querySelector('.gallery-nav.next').addEventListener('click', () => {
-            currentIndex = (currentIndex + 1) % galleryImages.length;
-            updateGallery();
-        });
-
-        // Initialize gallery
-        updateGallery();
-    }
-
     // FAQ Accordion
     const accordionItems = document.querySelectorAll('.accordion-item');
     accordionItems.forEach(item => {
