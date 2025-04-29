@@ -14,17 +14,35 @@ document.addEventListener('DOMContentLoaded', () => {
     if (galleryContainer) {
         // Add your gallery images here
         const galleryImages = [
-            'path/to/image1.jpg',
-            'path/to/image2.jpg',
-            'path/to/image3.jpg'
+            'images/gallery1.jpg',
+            'images/gallery2.jpg',
+            'images/gallery3.jpg',
+            'images/gallery4.jpg',
+            'images/gallery5.jpg',
+            'images/gallery6.jpg',
+            'images/gallery7.jpg',
+            'images/gallery8.jpg',
+            'images/gallery9.jpg',
+            'images/gallery10.jpg',
+            'images/gallery11.jpg',
+            'images/gallery12.jpg',
+            'images/gallery13.jpg',
+            'images/gallery14.jpg'
         ];
 
         let currentIndex = 0;
 
         function updateGallery() {
-            galleryContainer.style.backgroundImage = `url(${galleryImages[currentIndex]})`;
-            galleryContainer.style.backgroundSize = 'cover';
-            galleryContainer.style.backgroundPosition = 'center';
+            const img = document.createElement('img');
+            img.src = galleryImages[currentIndex];
+            img.alt = `Gallery image ${currentIndex + 1}`;
+            img.style.width = '100%';
+            img.style.height = '100%';
+            img.style.objectFit = 'cover';
+            
+            // Clear previous image
+            galleryContainer.innerHTML = '';
+            galleryContainer.appendChild(img);
         }
 
         document.querySelector('.gallery-nav.prev').addEventListener('click', () => {

@@ -29,7 +29,7 @@ h1, h2, h3 {
 .hero {
     height: 100vh;
     min-height: 100vh;
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('images/hero.jpg');
     background-size: cover;
     background-position: center;
     display: flex;
@@ -162,43 +162,35 @@ h1, h2, h3 {
 .story-container {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-    padding: 1rem;
-}
-
-.story-text {
-    flex: 1;
+    gap: 0;
+    padding: 0;
+    width: 100%;
+    position: relative;
 }
 
 .story-gallery {
     position: relative;
-    flex: 1;
-    min-height: 300px;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
 }
 
-.gallery-container {
+.video-container {
     position: relative;
-    height: 100%;
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 aspect ratio for video */
     overflow: hidden;
+    background: #000;
 }
 
-.gallery-nav {
+.video-container iframe,
+.video-container video {
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.8);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     border: none;
-    padding: 1rem;
-    cursor: pointer;
-    z-index: 10;
-}
-
-.gallery-nav.prev {
-    left: 1rem;
-}
-
-.gallery-nav.next {
-    right: 1rem;
 }
 
 /* Timeline Section */
@@ -463,8 +455,8 @@ html {
 }
 
 .container {
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
+    padding-left: 0;
+    padding-right: 0;
     width: 100%;
     box-sizing: border-box;
     display: flex;
@@ -612,4 +604,12 @@ html {
     margin-bottom: 0.5rem;
     letter-spacing: 1px;
     text-transform: uppercase;
+}
+
+/* Remove gallery-specific styles */
+.gallery-container,
+.gallery-nav,
+.gallery-nav.prev,
+.gallery-nav.next {
+    display: none;
 } 
