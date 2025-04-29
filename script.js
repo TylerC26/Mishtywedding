@@ -1,4 +1,22 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Navigation sticky behavior
+    const nav = document.querySelector('.main-nav');
+    const hero = document.querySelector('.hero');
+    const heroHeight = hero.offsetHeight;
+
+    function handleScroll() {
+        if (window.scrollY > heroHeight) {
+            nav.classList.add('sticky');
+            document.body.style.paddingTop = nav.offsetHeight + 'px';
+        } else {
+            nav.classList.remove('sticky');
+            document.body.style.paddingTop = '0';
+        }
+    }
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Check initial position
+
     // Smooth scrolling for navigation links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
