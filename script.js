@@ -96,4 +96,25 @@ document.addEventListener('DOMContentLoaded', () => {
         section.classList.add('fade-out');
         observer.observe(section);
     });
+
+    // Photo Upload Preview
+    const photoInput = document.getElementById('photo-input');
+    const photoGallery = document.getElementById('photo-gallery');
+    if (photoInput && photoGallery) {
+        photoInput.addEventListener('change', (e) => {
+            photoGallery.innerHTML = '';
+            const files = Array.from(e.target.files);
+            files.forEach(file => {
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(evt) {
+                        const img = document.createElement('img');
+                        img.src = evt.target.result;
+                        photoGallery.appendChild(img);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+    }
 }); 

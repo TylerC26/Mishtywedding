@@ -97,6 +97,67 @@ h1, h2, h3 {
     color: var(--accent-color);
 }
 
+.dropdown {
+    position: relative;
+}
+
+.dropdown > a::after {
+    content: ' ▼';
+    font-size: 0.7em;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-radius: 6px;
+    min-width: 160px;
+    z-index: 1001;
+    padding: 0.5rem 0;
+}
+
+.dropdown:hover .dropdown-menu,
+.dropdown:focus-within .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu li {
+    width: 100%;
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 0.5rem 1.5rem;
+    color: var(--text-color);
+    text-align: left;
+    font-size: 1rem;
+    background: none;
+    border: none;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+.dropdown-menu a:hover {
+    background: var(--primary-color);
+    color: var(--accent-color);
+}
+
+@media (max-width: 768px) {
+    .dropdown-menu {
+        position: static;
+        box-shadow: none;
+        min-width: 0;
+        border-radius: 0;
+        padding: 0;
+    }
+    .dropdown-menu a {
+        padding-left: 2rem;
+    }
+}
+
 /* Story Section */
 .story-container {
     display: flex;
@@ -395,4 +456,160 @@ footer {
 html {
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
+}
+
+.main-title {
+    padding-left: 1.5rem;
+}
+
+.container {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.section {
+    padding: 3rem 0;
+    text-align: center;
+}
+
+.section h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+    line-height: 1.2;
+    position: relative;
+}
+
+.section h2::after {
+    content: '';
+    display: block;
+    margin: 0.75rem auto 0 auto;
+    width: 60px;
+    height: 3px;
+    background: var(--accent-color);
+    border-radius: 2px;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+}
+
+.venue-details {
+    background: var(--primary-color);
+    border-radius: 10px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    margin: 0 auto;
+    max-width: 600px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+
+.venue-details h3 {
+    color: var(--accent-color);
+    margin-bottom: 0.5rem;
+}
+
+.venue-details p {
+    margin-bottom: 0.5rem;
+}
+
+.venue-map {
+    margin-top: 1.5rem;
+    min-height: 180px;
+    background: #eee;
+    border-radius: 8px;
+}
+
+.venue-details + .venue-details {
+    margin-top: 2rem;
+}
+
+.photo-upload-desc {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--light-text);
+}
+
+.photo-upload-form {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+#photo-input {
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    background: #fff;
+}
+
+.photo-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.photo-gallery img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    background: #fafafa;
+}
+
+.big-day-list {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.big-day-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.big-day-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Ensure forms and galleries are centered */
+.rsvp-form,
+.photo-upload-form,
+.photo-gallery,
+.hotel-cards,
+.party-grid,
+.registry-logos,
+.accordion,
+.timeline,
+.big-day-list {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.venue-type {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
 } 
