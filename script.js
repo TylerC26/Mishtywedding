@@ -88,10 +88,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Photo Upload Preview
     const photoInput = document.getElementById('photo-input');
     const photoGallery = document.getElementById('photo-gallery');
+    const uploadButton = document.getElementById('uploadButton');
+    const progressBar = document.getElementById('progressBar');
+    const uploadStatus = document.getElementById('uploadStatus');
+
     if (photoInput && photoGallery) {
         photoInput.addEventListener('change', (e) => {
             photoGallery.innerHTML = '';
             const files = Array.from(e.target.files);
+            
             files.forEach(file => {
                 if (file.type.startsWith('image/')) {
                     const reader = new FileReader();
@@ -103,6 +108,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     reader.readAsDataURL(file);
                 }
             });
+
+            // Show the upload button after selecting files
+            if (uploadButton) {
+                uploadButton.style.display = 'block';
+            }
         });
     }
 
@@ -142,82 +152,74 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Get references to DOM elements
-    const uploadButton = document.getElementById('uploadButton');
-    const progressBar = document.getElementById('progressBar');
-    const uploadStatus = document.getElementById('uploadStatus');
-
-    console.log('DOM Elements:', {
-        photoInput,
-        uploadButton,
-        progressBar,
-        uploadStatus
-    });
-
     // Add event listener to the upload button
-    uploadButton.addEventListener('click', async () => {
-        const file = photoInput.files[0];
-        if (!file) {
-            alert('Please select a photo to upload');
-            return;
-        }
-
-        try {
-            // Create a reference to the storage location
-            const storage = getStorage();
-            const photoRef = ref(storage, `wedding_photos/${file.name}`);
-
-            // Upload the file
-            const uploadTask = uploadBytesResumable(photoRef, file);
-
-            // Monitor upload progress
-            uploadTask.on('state_changed',
-                (snapshot) => {
-                    // Progress monitoring
-                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                    if (progressBar) {
-                        progressBar.style.width = progress + '%';
-                    }
-                    if (uploadStatus) {
-                        uploadStatus.textContent = `Uploading: ${Math.round(progress)}%`;
-                    }
-                },
-                (error) => {
-                    // Handle unsuccessful uploads
-                    console.error('Upload failed:', error);
-                    if (uploadStatus) {
-                        uploadStatus.textContent = 'Upload failed. Please try again.';
-                    }
-                },
-                () => {
-                    // Handle successful uploads
-                    if (uploadStatus) {
-                        uploadStatus.textContent = 'Upload successful!';
-                    }
-                    if (photoInput) {
-                        photoInput.value = ''; // Clear the input
-                    }
-                    if (progressBar) {
-                        progressBar.style.width = '0%';
-                    }
-                    
-                    // Show success message
-                    const successMessage = document.createElement('div');
-                    successMessage.className = 'upload-success';
-                    successMessage.innerHTML = '<i class="fas fa-check-circle"></i> Photo uploaded successfully!';
-                    document.querySelector('.photo-upload-form').appendChild(successMessage);
-                    
-                    // Remove success message after 3 seconds
-                    setTimeout(() => {
-                        successMessage.remove();
-                    }, 3000);
-                }
-            );
-        } catch (error) {
-            console.error('Error during upload:', error);
-            if (uploadStatus) {
-                uploadStatus.textContent = 'An error occurred. Please try again.';
+    if (uploadButton) {
+        uploadButton.addEventListener('click', async () => {
+            const files = photoInput.files;
+            if (!files || files.length === 0) {
+                alert('Please select a photo to upload');
+                return;
             }
-        }
-    });
+
+            try {
+                // Create a reference to the storage location
+                const storage = getStorage();
+                
+                // Upload each file
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    const photoRef = ref(storage, `wedding_photos/${file.name}`);
+
+                    // Upload the file
+                    const uploadTask = uploadBytesResumable(photoRef, file);
+
+                    // Monitor upload progress
+                    uploadTask.on('state_changed',
+                        (snapshot) => {
+                            // Progress monitoring
+                            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                            if (progressBar) {
+                                progressBar.style.width = progress + '%';
+                            }
+                            if (uploadStatus) {
+                                uploadStatus.textContent = `Uploading: ${Math.round(progress)}%`;
+                            }
+                        },
+                        (error) => {
+                            // Handle unsuccessful uploads
+                            console.error('Upload failed:', error);
+                            if (uploadStatus) {
+                                uploadStatus.textContent = 'Upload failed. Please try again.';
+                            }
+                        },
+                        () => {
+                            // Handle successful uploads
+                            if (uploadStatus) {
+                                uploadStatus.textContent = 'Upload successful!';
+                            }
+                            if (progressBar) {
+                                progressBar.style.width = '0%';
+                            }
+                            
+                            // Show success message
+                            const successMessage = document.createElement('div');
+                            successMessage.className = 'upload-success';
+                            successMessage.innerHTML = '<i class="fas fa-check-circle"></i> Photo uploaded successfully!';
+                            document.querySelector('.photo-upload-form').appendChild(successMessage);
+                            
+                            // Remove success message after 3 seconds
+                            setTimeout(() => {
+                                successMessage.remove();
+                            }, 3000);
+                        }
+                    );
+                }
+            } catch (error) {
+                console.error('Error during upload:', error);
+                if (uploadStatus) {
+                    uploadStatus.textContent = 'An error occurred. Please try again.';
+                }
+            }
+        });
+    }
 }); 
