@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: mishty-wedding
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    staticPublishPath: .
+    envVars:
+      - key: NODE_VERSION
+        value: 18.17.0 

@@ -1,0 +1,12 @@
+{
+  "name": "mishty-wedding",
+  "version": "1.0.0",
+  "description": "Michelle and Tyler's Wedding Website",
+  "main": "index.html",
+  "scripts": {
+    "start": "serve -s ."
+  },
+  "dependencies": {
+    "serve": "^14.2.1"
+  }
+} 
