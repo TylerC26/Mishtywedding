@@ -1,4 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Restore scroll position if it exists
+    const savedScrollPosition = sessionStorage.getItem('scrollPosition');
+    if (savedScrollPosition) {
+        window.scrollTo(0, savedScrollPosition);
+        sessionStorage.removeItem('scrollPosition');
+    }
+
     // Navigation sticky behavior
     const nav = document.querySelector('.main-nav');
     const hero = document.querySelector('.hero');
@@ -85,23 +92,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Photo Upload Preview
     const photoInput = document.getElementById('photo-input');
-    const photoGallery = document.getElementById('photo-gallery');
     const progressBar = document.getElementById('progressBar');
     const uploadStatus = document.getElementById('uploadStatus');
     const selectButton = document.querySelector('.photo-upload-form label');
     const previewContainer = document.createElement('div');
     previewContainer.className = 'preview-container';
     document.querySelector('.photo-upload-form').appendChild(previewContainer);
+    
+    // Hide containers by default
+    previewContainer.style.display = 'none';
+    if (progressBar) {
+        progressBar.parentElement.style.display = 'none';
+    }
 
-    if (photoInput && photoGallery) {
+    if (photoInput) {
         // Handle file selection
         photoInput.addEventListener('change', (e) => {
             const files = Array.from(e.target.files);
             
             if (files.length === 0) {
+                previewContainer.style.display = 'none';
                 return;
             }
 
+            // Show preview container
+            previewContainer.style.display = 'grid';
+            
             // Clear previous previews
             previewContainer.innerHTML = '';
             
@@ -122,6 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         removeBtn.onclick = () => {
                             previewItem.remove();
                             if (previewContainer.children.length === 0) {
+                                previewContainer.style.display = 'none';
                                 selectButton.style.display = 'flex';
                             }
                         };
@@ -136,7 +153,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Change select button to upload button
             selectButton.innerHTML = '<i class="fas fa-upload"></i><span class="upload-text">Upload Photos</span>';
-            selectButton.onclick = async (e) => {
+            // Remove all existing click handlers
+            const newSelectButton = selectButton.cloneNode(true);
+            selectButton.parentNode.replaceChild(newSelectButton, selectButton);
+            // Add the upload handler to the new button
+            newSelectButton.onclick = async (e) => {
                 e.preventDefault();
                 if (files.length === 0) {
                     return;
@@ -146,9 +167,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log('Number of files:', files.length);
 
                 try {
+                    // Show progress bar
+                    if (progressBar) {
+                        progressBar.parentElement.style.display = 'block';
+                    }
+
                     // Get storage reference
                     const storage = firebase.storage();
                     console.log('Storage reference obtained');
+
+                    // Track completed uploads
+                    let completedUploads = 0;
 
                     // Upload each file
                     for (let i = 0; i < files.length; i++) {
@@ -174,6 +203,12 @@ document.addEventListener('DOMContentLoaded', () => {
                                 console.log('Upload progress:', progress);
                                 if (progressBar) {
                                     progressBar.style.width = progress + '%';
+                                    // Hide progress bar when at 0%
+                                    if (progress === 0) {
+                                        progressBar.parentElement.style.display = 'none';
+                                    } else {
+                                        progressBar.parentElement.style.display = 'block';
+                                    }
                                 }
                                 if (uploadStatus) {
                                     uploadStatus.textContent = `Uploading: ${Math.round(progress)}%`;
@@ -187,6 +222,9 @@ document.addEventListener('DOMContentLoaded', () => {
                                 if (uploadStatus) {
                                     uploadStatus.textContent = 'Upload failed. Please try again.';
                                 }
+                                if (progressBar) {
+                                    progressBar.parentElement.style.display = 'none';
+                                }
                             },
                             async () => {
                                 try {
@@ -195,34 +233,45 @@ document.addEventListener('DOMContentLoaded', () => {
                                     const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
                                     console.log('Download URL obtained:', downloadURL);
                                     
-                                    // Show success message
-                                    if (uploadStatus) {
-                                        uploadStatus.textContent = 'Upload successful!';
-                                    }
-                                    if (progressBar) {
-                                        progressBar.style.width = '0%';
-                                    }
+                                    completedUploads++;
                                     
-                                    const successMessage = document.createElement('div');
-                                    successMessage.className = 'upload-success';
-                                    successMessage.innerHTML = '<i class="fas fa-check-circle"></i> Photo uploaded successfully!';
-                                    document.querySelector('.photo-upload-form').appendChild(successMessage);
-                                    
-                                    // Remove success message after 3 seconds
-                                    setTimeout(() => {
-                                        successMessage.remove();
-                                    }, 3000);
+                                    // Show success message only when all files are uploaded
+                                    if (completedUploads === files.length) {
+                                        if (uploadStatus) {
+                                            uploadStatus.textContent = 'Upload successful!';
+                                        }
+                                        if (progressBar) {
+                                            progressBar.style.width = '0%';
+                                            progressBar.parentElement.style.display = 'none';
+                                        }
+                                        
+                                        const successMessage = document.createElement('div');
+                                        successMessage.className = 'upload-success';
+                                        successMessage.innerHTML = '<i class="fas fa-check-circle"></i> Photos uploaded successfully!';
+                                        document.querySelector('.photo-upload-form').appendChild(successMessage);
+                                        
+                                        // Store current scroll position
+                                        sessionStorage.setItem('scrollPosition', window.scrollY);
+                                        
+                                        // Remove success message after 3 seconds and refresh
+                                        setTimeout(() => {
+                                            successMessage.remove();
+                                            // Refresh the page
+                                            window.location.reload();
+                                        }, 3000);
 
-                                    // Clear preview container and reset form
-                                    previewContainer.innerHTML = '';
-                                    photoInput.value = '';
-                                    
-                                    // Reset select button
-                                    selectButton.innerHTML = '<i class="fas fa-cloud-upload-alt"></i><span class="upload-text">Select Photos</span>';
-                                    selectButton.onclick = (e) => {
-                                        e.preventDefault();
-                                        photoInput.click();
-                                    };
+                                        // Clear preview container and reset form
+                                        previewContainer.innerHTML = '';
+                                        previewContainer.style.display = 'none';
+                                        photoInput.value = '';
+                                        
+                                        // Reset select button
+                                        newSelectButton.innerHTML = '<i class="fas fa-cloud-upload-alt"></i><span class="upload-text">Select Photos</span>';
+                                        newSelectButton.onclick = (e) => {
+                                            e.preventDefault();
+                                            photoInput.click();
+                                        };
+                                    }
                                 } catch (error) {
                                     console.error('Error getting download URL:', error);
                                     console.error('Error code:', error.code);
@@ -241,16 +290,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (uploadStatus) {
                         uploadStatus.textContent = 'An error occurred. Please try again.';
                     }
+                    if (progressBar) {
+                        progressBar.parentElement.style.display = 'none';
+                    }
                 }
             };
         });
 
-        // Handle click on the select button
+        // Handle click on the select button - only for initial state
         if (selectButton) {
-            selectButton.addEventListener('click', (e) => {
+            selectButton.onclick = (e) => {
                 e.preventDefault();
                 photoInput.click();
-            });
+            };
         }
     }
 }); 
