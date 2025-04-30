@@ -1,5 +1,3 @@
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
-
 document.addEventListener('DOMContentLoaded', () => {
     // Navigation sticky behavior
     const nav = document.querySelector('.main-nav');
@@ -88,138 +86,171 @@ document.addEventListener('DOMContentLoaded', () => {
     // Photo Upload Preview
     const photoInput = document.getElementById('photo-input');
     const photoGallery = document.getElementById('photo-gallery');
-    const uploadButton = document.getElementById('uploadButton');
     const progressBar = document.getElementById('progressBar');
     const uploadStatus = document.getElementById('uploadStatus');
+    const selectButton = document.querySelector('.photo-upload-form label');
+    const previewContainer = document.createElement('div');
+    previewContainer.className = 'preview-container';
+    document.querySelector('.photo-upload-form').appendChild(previewContainer);
 
     if (photoInput && photoGallery) {
+        // Handle file selection
         photoInput.addEventListener('change', (e) => {
-            photoGallery.innerHTML = '';
             const files = Array.from(e.target.files);
             
+            if (files.length === 0) {
+                return;
+            }
+
+            // Clear previous previews
+            previewContainer.innerHTML = '';
+            
+            // Show preview of selected photos
             files.forEach(file => {
                 if (file.type.startsWith('image/')) {
                     const reader = new FileReader();
                     reader.onload = function(evt) {
+                        const previewItem = document.createElement('div');
+                        previewItem.className = 'preview-item';
+                        
                         const img = document.createElement('img');
                         img.src = evt.target.result;
-                        photoGallery.appendChild(img);
+                        
+                        const removeBtn = document.createElement('button');
+                        removeBtn.className = 'remove-preview';
+                        removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+                        removeBtn.onclick = () => {
+                            previewItem.remove();
+                            if (previewContainer.children.length === 0) {
+                                selectButton.style.display = 'flex';
+                            }
+                        };
+                        
+                        previewItem.appendChild(img);
+                        previewItem.appendChild(removeBtn);
+                        previewContainer.appendChild(previewItem);
                     };
                     reader.readAsDataURL(file);
                 }
             });
 
-            // Show the upload button after selecting files
-            if (uploadButton) {
-                uploadButton.style.display = 'block';
-            }
+            // Change select button to upload button
+            selectButton.innerHTML = '<i class="fas fa-upload"></i><span class="upload-text">Upload Photos</span>';
+            selectButton.onclick = async (e) => {
+                e.preventDefault();
+                if (files.length === 0) {
+                    return;
+                }
+
+                console.log('Starting upload process...');
+                console.log('Number of files:', files.length);
+
+                try {
+                    // Get storage reference
+                    const storage = firebase.storage();
+                    console.log('Storage reference obtained');
+
+                    // Upload each file
+                    for (let i = 0; i < files.length; i++) {
+                        const file = files[i];
+                        console.log('Processing file:', file.name);
+                        
+                        const timestamp = new Date().getTime();
+                        const fileName = `${timestamp}_${file.name}`;
+                        console.log('Generated filename:', fileName);
+                        
+                        const storageRef = storage.ref(`wedding_photos/${fileName}`);
+                        console.log('Storage reference created:', storageRef.fullPath);
+
+                        // Upload the file
+                        console.log('Starting file upload...');
+                        const uploadTask = storageRef.put(file);
+
+                        // Monitor upload progress
+                        uploadTask.on('state_changed',
+                            (snapshot) => {
+                                // Progress monitoring
+                                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                                console.log('Upload progress:', progress);
+                                if (progressBar) {
+                                    progressBar.style.width = progress + '%';
+                                }
+                                if (uploadStatus) {
+                                    uploadStatus.textContent = `Uploading: ${Math.round(progress)}%`;
+                                }
+                            },
+                            (error) => {
+                                // Handle unsuccessful uploads
+                                console.error('Upload failed:', error);
+                                console.error('Error code:', error.code);
+                                console.error('Error message:', error.message);
+                                if (uploadStatus) {
+                                    uploadStatus.textContent = 'Upload failed. Please try again.';
+                                }
+                            },
+                            async () => {
+                                try {
+                                    console.log('Upload completed, getting download URL...');
+                                    // Get the download URL
+                                    const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
+                                    console.log('Download URL obtained:', downloadURL);
+                                    
+                                    // Show success message
+                                    if (uploadStatus) {
+                                        uploadStatus.textContent = 'Upload successful!';
+                                    }
+                                    if (progressBar) {
+                                        progressBar.style.width = '0%';
+                                    }
+                                    
+                                    const successMessage = document.createElement('div');
+                                    successMessage.className = 'upload-success';
+                                    successMessage.innerHTML = '<i class="fas fa-check-circle"></i> Photo uploaded successfully!';
+                                    document.querySelector('.photo-upload-form').appendChild(successMessage);
+                                    
+                                    // Remove success message after 3 seconds
+                                    setTimeout(() => {
+                                        successMessage.remove();
+                                    }, 3000);
+
+                                    // Clear preview container and reset form
+                                    previewContainer.innerHTML = '';
+                                    photoInput.value = '';
+                                    
+                                    // Reset select button
+                                    selectButton.innerHTML = '<i class="fas fa-cloud-upload-alt"></i><span class="upload-text">Select Photos</span>';
+                                    selectButton.onclick = (e) => {
+                                        e.preventDefault();
+                                        photoInput.click();
+                                    };
+                                } catch (error) {
+                                    console.error('Error getting download URL:', error);
+                                    console.error('Error code:', error.code);
+                                    console.error('Error message:', error.message);
+                                    if (uploadStatus) {
+                                        uploadStatus.textContent = 'Error processing upload. Please try again.';
+                                    }
+                                }
+                            }
+                        );
+                    }
+                } catch (error) {
+                    console.error('Error during upload:', error);
+                    console.error('Error code:', error.code);
+                    console.error('Error message:', error.message);
+                    if (uploadStatus) {
+                        uploadStatus.textContent = 'An error occurred. Please try again.';
+                    }
+                }
+            };
         });
-    }
 
-    document.getElementById('photo-input').addEventListener('change', function(e) {
-        const uploadForm = document.querySelector('.photo-upload-form');
-        const selectButton = document.querySelector('.photo-upload-form label');
-        
-        if (this.files && this.files.length > 0) {
-            // Hide the select button
-            selectButton.style.display = 'none';
-            
-            // Create upload button if it doesn't exist
-            if (!document.querySelector('.upload-btn')) {
-                const uploadBtn = document.createElement('button');
-                uploadBtn.className = 'upload-btn';
-                uploadBtn.innerHTML = '<i class="fas fa-upload"></i> Upload Selected Photos';
-                uploadForm.appendChild(uploadBtn);
-
-                // Add click handler to the upload button
-                uploadBtn.addEventListener('click', function() {
-                    // Here you would typically handle the actual upload
-                    // For now, we'll just simulate the upload
-                    const successMessage = document.createElement('div');
-                    successMessage.className = 'upload-success';
-                    successMessage.innerHTML = '<i class="fas fa-check-circle"></i> Photos uploaded successfully!';
-                    uploadForm.appendChild(successMessage);
-
-                    // Reset the form and restore initial state after a short delay
-                    setTimeout(() => {
-                        document.getElementById('photo-input').value = '';
-                        selectButton.style.display = 'flex';
-                        uploadBtn.remove();
-                        successMessage.remove();
-                    }, 3000);
-                });
-            }
+        // Handle click on the select button
+        if (selectButton) {
+            selectButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                photoInput.click();
+            });
         }
-    });
-
-    // Add event listener to the upload button
-    if (uploadButton) {
-        uploadButton.addEventListener('click', async () => {
-            const files = photoInput.files;
-            if (!files || files.length === 0) {
-                alert('Please select a photo to upload');
-                return;
-            }
-
-            try {
-                // Create a reference to the storage location
-                const storage = getStorage();
-                
-                // Upload each file
-                for (let i = 0; i < files.length; i++) {
-                    const file = files[i];
-                    const photoRef = ref(storage, `wedding_photos/${file.name}`);
-
-                    // Upload the file
-                    const uploadTask = uploadBytesResumable(photoRef, file);
-
-                    // Monitor upload progress
-                    uploadTask.on('state_changed',
-                        (snapshot) => {
-                            // Progress monitoring
-                            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                            if (progressBar) {
-                                progressBar.style.width = progress + '%';
-                            }
-                            if (uploadStatus) {
-                                uploadStatus.textContent = `Uploading: ${Math.round(progress)}%`;
-                            }
-                        },
-                        (error) => {
-                            // Handle unsuccessful uploads
-                            console.error('Upload failed:', error);
-                            if (uploadStatus) {
-                                uploadStatus.textContent = 'Upload failed. Please try again.';
-                            }
-                        },
-                        () => {
-                            // Handle successful uploads
-                            if (uploadStatus) {
-                                uploadStatus.textContent = 'Upload successful!';
-                            }
-                            if (progressBar) {
-                                progressBar.style.width = '0%';
-                            }
-                            
-                            // Show success message
-                            const successMessage = document.createElement('div');
-                            successMessage.className = 'upload-success';
-                            successMessage.innerHTML = '<i class="fas fa-check-circle"></i> Photo uploaded successfully!';
-                            document.querySelector('.photo-upload-form').appendChild(successMessage);
-                            
-                            // Remove success message after 3 seconds
-                            setTimeout(() => {
-                                successMessage.remove();
-                            }, 3000);
-                        }
-                    );
-                }
-            } catch (error) {
-                console.error('Error during upload:', error);
-                if (uploadStatus) {
-                    uploadStatus.textContent = 'An error occurred. Please try again.';
-                }
-            }
-        });
     }
 }); 

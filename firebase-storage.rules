@@ -1,0 +1,20 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/mishtywe.firebasestorage.app/o {
+    match /wedding_photos/{allPaths=**} {
+      // Allow anyone to read photos
+      allow read: if true;
+      
+      // Allow uploads only for image files
+      allow write: if 
+        request.resource.contentType.matches('image/.*') &&
+        request.resource.size < 5 * 1024 * 1024; // 5MB limit
+    }
+    
+    // Deny access to all other paths
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+} 

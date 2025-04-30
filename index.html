@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#f8e1e4">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Mish & Ty's Wedding</title>
     <link rel="stylesheet" href="styles.css">
@@ -21,6 +22,7 @@
             <p class="date">Save the Date</p>
             <p class="date-details">31 January 2026</p>
             <p class="welcome-message">We can't wait to celebrate with you!</p>
+            <div class="version-indicator">Production Version 1.0.1</div>
         </div>
     </header>
 
@@ -170,13 +172,12 @@
                     <div class="event-details">
                         <h3>Photo Gallery</h3>
                         <p class="event-address">We'd love to see your memories! Upload your favorite photos from the wedding below.</p>
-                        <form id="photo-upload-form" class="photo-upload-form">
+                        <form id="photo-upload-form" class="photo-upload-form" onsubmit="return false;">
                             <label for="photo-input">
                                 <i class="fas fa-cloud-upload-alt"></i>
                                 <span class="upload-text">Select Photos</span>
                             </label>
                             <input type="file" id="photo-input" name="photos" accept="image/*" multiple>
-                            <button type="button" id="uploadButton" class="upload-button">Upload Selected Photos</button>
                             <div class="upload-progress">
                                 <div id="progressBar" class="progress-bar"></div>
                             </div>
@@ -243,9 +244,9 @@
         <p>&copy; 2025 Michelle & Tyler's Wedding</p>
     </footer>
 
-    <!-- Add Firebase scripts -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
     <script src="firebase-config.js"></script>
     <script src="script.js"></script>
 </body>
