@@ -1,3 +1,5 @@
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+
 document.addEventListener('DOMContentLoaded', () => {
     // Navigation sticky behavior
     const nav = document.querySelector('.main-nav');
@@ -134,10 +136,87 @@ document.addEventListener('DOMContentLoaded', () => {
                         selectButton.style.display = 'flex';
                         uploadBtn.remove();
                         successMessage.remove();
-                        // Reload the page
-                        window.location.reload();
-                    }, 10000);
+                    }, 3000);
                 });
+            }
+        }
+    });
+
+    // Get references to DOM elements
+    const uploadButton = document.getElementById('uploadButton');
+    const progressBar = document.getElementById('progressBar');
+    const uploadStatus = document.getElementById('uploadStatus');
+
+    console.log('DOM Elements:', {
+        photoInput,
+        uploadButton,
+        progressBar,
+        uploadStatus
+    });
+
+    // Add event listener to the upload button
+    uploadButton.addEventListener('click', async () => {
+        const file = photoInput.files[0];
+        if (!file) {
+            alert('Please select a photo to upload');
+            return;
+        }
+
+        try {
+            // Create a reference to the storage location
+            const storage = getStorage();
+            const photoRef = ref(storage, `wedding_photos/${file.name}`);
+
+            // Upload the file
+            const uploadTask = uploadBytesResumable(photoRef, file);
+
+            // Monitor upload progress
+            uploadTask.on('state_changed',
+                (snapshot) => {
+                    // Progress monitoring
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    if (progressBar) {
+                        progressBar.style.width = progress + '%';
+                    }
+                    if (uploadStatus) {
+                        uploadStatus.textContent = `Uploading: ${Math.round(progress)}%`;
+                    }
+                },
+                (error) => {
+                    // Handle unsuccessful uploads
+                    console.error('Upload failed:', error);
+                    if (uploadStatus) {
+                        uploadStatus.textContent = 'Upload failed. Please try again.';
+                    }
+                },
+                () => {
+                    // Handle successful uploads
+                    if (uploadStatus) {
+                        uploadStatus.textContent = 'Upload successful!';
+                    }
+                    if (photoInput) {
+                        photoInput.value = ''; // Clear the input
+                    }
+                    if (progressBar) {
+                        progressBar.style.width = '0%';
+                    }
+                    
+                    // Show success message
+                    const successMessage = document.createElement('div');
+                    successMessage.className = 'upload-success';
+                    successMessage.innerHTML = '<i class="fas fa-check-circle"></i> Photo uploaded successfully!';
+                    document.querySelector('.photo-upload-form').appendChild(successMessage);
+                    
+                    // Remove success message after 3 seconds
+                    setTimeout(() => {
+                        successMessage.remove();
+                    }, 3000);
+                }
+            );
+        } catch (error) {
+            console.error('Error during upload:', error);
+            if (uploadStatus) {
+                uploadStatus.textContent = 'An error occurred. Please try again.';
             }
         }
     });
